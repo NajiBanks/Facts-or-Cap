@@ -287,6 +287,250 @@ const exampleTrivia = [
   }
 ];
 
+// Add coding questions
+const codingTrivia = [
+  {
+    question: "JavaScript was originally created in 10 days.",
+    answer: true,
+    explanation: "Fact! Brendan Eich created JavaScript in just 10 days in 1995 while working at Netscape."
+  },
+  {
+    question: "Python was named after the snake.",
+    answer: false,
+    explanation: "Cap! Python was named after Monty Python's Flying Circus, not the snake."
+  },
+  {
+    question: "HTML is a programming language.",
+    answer: false,
+    explanation: "Cap! HTML is a markup language, not a programming language."
+  },
+  {
+    question: "The first computer bug was an actual insect.",
+    answer: true,
+    explanation: "Fact! The term 'bug' came from a moth found in a relay of the Harvard Mark II computer in 1947."
+  },
+  {
+    question: "React was created by Facebook.",
+    answer: true,
+    explanation: "Fact! React was developed by Facebook and first released in 2013."
+  },
+  {
+    question: "CSS can only be used for styling web pages.",
+    answer: false,
+    explanation: "Cap! CSS can be used for styling various documents, not just web pages."
+  },
+  {
+    question: "Git was created by Linus Torvalds.",
+    answer: true,
+    explanation: "Fact! Git was created by Linus Torvalds in 2005 for Linux kernel development."
+  },
+  {
+    question: "TypeScript is a superset of JavaScript.",
+    answer: true,
+    explanation: "Fact! TypeScript adds static typing to JavaScript, making it a superset."
+  },
+  {
+    question: "The first computer programmer was a man.",
+    answer: false,
+    explanation: "Cap! Ada Lovelace is considered the first computer programmer."
+  },
+  {
+    question: "Node.js can only run on Windows.",
+    answer: false,
+    explanation: "Cap! Node.js is cross-platform and can run on Windows, macOS, and Linux."
+  },
+  {
+    question: "The first website is still online.",
+    answer: true,
+    explanation: "Fact! The first website, created by Tim Berners-Lee, is still accessible at info.cern.ch."
+  },
+  {
+    question: "SQL stands for Standard Query Language.",
+    answer: false,
+    explanation: "Cap! SQL stands for Structured Query Language."
+  },
+  {
+    question: "The first computer virus was created in the 1980s.",
+    answer: false,
+    explanation: "Cap! The first computer virus, 'Creeper', was created in 1971."
+  },
+  {
+    question: "GitHub was the first code hosting platform.",
+    answer: false,
+    explanation: "Cap! SourceForge and others existed before GitHub."
+  },
+  {
+    question: "The first programming language was FORTRAN.",
+    answer: false,
+    explanation: "Cap! The first programming language was Plankalkül, created in 1943."
+  },
+  {
+    question: "Docker was originally written in Python.",
+    answer: false,
+    explanation: "Cap! Docker was written in Go (Golang)."
+  },
+  {
+    question: "The first version of Windows was released in 1985.",
+    answer: true,
+    explanation: "Fact! Windows 1.0 was released on November 20, 1985."
+  },
+  {
+    question: "Ruby was created by a Japanese programmer.",
+    answer: true,
+    explanation: "Fact! Ruby was created by Yukihiro Matsumoto in Japan."
+  },
+  {
+    question: "The first iPhone app was written in Swift.",
+    answer: false,
+    explanation: "Cap! The first iPhone apps were written in Objective-C."
+  },
+  {
+    question: "Linux is older than Windows.",
+    answer: false,
+    explanation: "Cap! Linux was created in 1991, while Windows 1.0 was released in 1985."
+  },
+  {
+    question: "The first computer mouse was made of wood.",
+    answer: true,
+    explanation: "Fact! The first mouse prototype was made of wood by Doug Engelbart in 1964."
+  },
+  {
+    question: "Java and JavaScript are the same language.",
+    answer: false,
+    explanation: "Cap! They are completely different languages with different purposes."
+  },
+  {
+    question: "The first computer virus was created for research purposes.",
+    answer: true,
+    explanation: "Fact! The Creeper virus was created as an experiment to test self-replicating programs."
+  },
+  {
+    question: "CSS was created before HTML.",
+    answer: false,
+    explanation: "Cap! HTML was created in 1991, while CSS was introduced in 1996."
+  },
+  {
+    question: "The first computer programmer was a woman.",
+    answer: true,
+    explanation: "Fact! Ada Lovelace is considered the first computer programmer."
+  },
+  {
+    question: "Python was named after the snake.",
+    answer: false,
+    explanation: "Cap! Python was named after Monty Python's Flying Circus."
+  },
+  {
+    question: "The first computer bug was an actual insect.",
+    answer: true,
+    explanation: "Fact! A moth was found in a relay of the Harvard Mark II computer."
+  },
+  {
+    question: "React was created by Facebook.",
+    answer: true,
+    explanation: "Fact! React was developed by Facebook and first released in 2013."
+  },
+  {
+    question: "Git was created by Linus Torvalds.",
+    answer: true,
+    explanation: "Fact! Git was created by Linus Torvalds in 2005 for Linux kernel development."
+  },
+  {
+    question: "TypeScript is a superset of JavaScript.",
+    answer: true,
+    explanation: "Fact! TypeScript adds static typing to JavaScript."
+  },
+  {
+    question: "Node.js can only run on Windows.",
+    answer: false,
+    explanation: "Cap! Node.js is cross-platform and can run on Windows, macOS, and Linux."
+  },
+  {
+    question: "The first website is still online.",
+    answer: true,
+    explanation: "Fact! The first website, created by Tim Berners-Lee, is still accessible."
+  },
+  {
+    question: "SQL stands for Standard Query Language.",
+    answer: false,
+    explanation: "Cap! SQL stands for Structured Query Language."
+  },
+  {
+    question: "The first computer virus was created in the 1980s.",
+    answer: false,
+    explanation: "Cap! The first computer virus, 'Creeper', was created in 1971."
+  },
+  {
+    question: "GitHub was the first code hosting platform.",
+    answer: false,
+    explanation: "Cap! SourceForge and others existed before GitHub."
+  },
+  {
+    question: "The first programming language was FORTRAN.",
+    answer: false,
+    explanation: "Cap! The first programming language was Plankalkül, created in 1943."
+  },
+  {
+    question: "Docker was originally written in Python.",
+    answer: false,
+    explanation: "Cap! Docker was written in Go (Golang)."
+  },
+  {
+    question: "The first version of Windows was released in 1985.",
+    answer: true,
+    explanation: "Fact! Windows 1.0 was released on November 20, 1985."
+  },
+  {
+    question: "Ruby was created by a Japanese programmer.",
+    answer: true,
+    explanation: "Fact! Ruby was created by Yukihiro Matsumoto in Japan."
+  },
+  {
+    question: "The first iPhone app was written in Swift.",
+    answer: false,
+    explanation: "Cap! The first iPhone apps were written in Objective-C."
+  },
+  {
+    question: "Linux is older than Windows.",
+    answer: false,
+    explanation: "Cap! Linux was created in 1991, while Windows 1.0 was released in 1985."
+  },
+  {
+    question: "The first computer mouse was made of wood.",
+    answer: true,
+    explanation: "Fact! The first mouse prototype was made of wood by Doug Engelbart in 1964."
+  },
+  {
+    question: "Java and JavaScript are the same language.",
+    answer: false,
+    explanation: "Cap! They are completely different languages with different purposes."
+  },
+  {
+    question: "The first computer virus was created for research purposes.",
+    answer: true,
+    explanation: "Fact! The Creeper virus was created as an experiment to test self-replicating programs."
+  },
+  {
+    question: "CSS was created before HTML.",
+    answer: false,
+    explanation: "Cap! HTML was created in 1991, while CSS was introduced in 1996."
+  },
+  {
+    question: "The first computer programmer was a woman.",
+    answer: true,
+    explanation: "Fact! Ada Lovelace is considered the first computer programmer."
+  },
+  {
+    question: "Python was named after the snake.",
+    answer: false,
+    explanation: "Cap! Python was named after Monty Python's Flying Circus."
+  },
+  {
+    question: "The first computer bug was an actual insect.",
+    answer: true,
+    explanation: "Fact! A moth was found in a relay of the Harvard Mark II computer."
+  }
+];
+
 // Add a "Next Question" button (will be created in JavaScript)
 let nextButton;
 
@@ -302,8 +546,8 @@ function playSound(sound) {
   });
 }
 
-function loadTriviaData() {
-  triviaData = exampleTrivia;
+function loadTriviaData(category) {
+  triviaData = category === 'coding' ? codingTrivia : exampleTrivia;
   shuffleArray(triviaData);
   displayQuestion();
 }
@@ -470,7 +714,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewLeaderboardButton = document.getElementById('view-leaderboard-button');
   const backButton = document.getElementById('back-button');
   const backToHomeButton = document.getElementById('back-to-home');
+  const categorySelection = document.querySelector('.category-selection');
+  const categoryButtons = document.querySelectorAll('.category-button');
+  let selectedCategory = null;
 
+  // Show category selection after username is entered
   startButton.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     
@@ -481,13 +729,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     currentUsername = username;
     usernameError.textContent = '';
-    startScreen.style.display = 'none';
-    gameContainer.style.display = 'block';
-    skipsRemaining = 3;
-    wrongAnswers = 0;
-    updateSkipsDisplay();
-    updateWrongDisplay();
-    loadTriviaData();
+    categorySelection.style.display = 'block';
+    startButton.style.display = 'none';
+  });
+
+  // Handle category selection
+  categoryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Remove selected class from all buttons
+      categoryButtons.forEach(btn => btn.classList.remove('selected'));
+      // Add selected class to clicked button
+      button.classList.add('selected');
+      selectedCategory = button.dataset.category;
+      
+      // Start game with selected category
+      startScreen.style.display = 'none';
+      gameContainer.style.display = 'block';
+      skipsRemaining = 3;
+      wrongAnswers = 0;
+      updateSkipsDisplay();
+      updateWrongDisplay();
+      loadTriviaData(selectedCategory);
+    });
   });
 
   // Add back to home/try again button functionality
