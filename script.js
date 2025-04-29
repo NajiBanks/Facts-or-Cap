@@ -8,8 +8,11 @@ let score = 0;
 let currentQuestionIndex = 0;
 let triviaData = [];
 let skipsRemaining = 3;
+let wrongAnswers = 0;
+const MAX_WRONG_ANSWERS = 10;
 const skipButton = document.getElementById('skip-button');
 const skipsDisplay = document.getElementById('skips');
+const wrongDisplay = document.getElementById('wrong');
 
 const exampleTrivia = [
   {
@@ -308,29 +311,20 @@ function loadTriviaData() {
 function displayQuestion() {
   // Clear previous feedback
   feedbackElement.textContent = '';
-  feedbackElement.className = 'feedback'; // Reset classes
+  feedbackElement.className = 'feedback';
 
-  if (currentQuestionIndex < triviaData.length) {
+  if (currentQuestionIndex < triviaData.length && wrongAnswers < MAX_WRONG_ANSWERS) {
     const currentQuestion = triviaData[currentQuestionIndex];
     questionText.textContent = currentQuestion.question;
-    // Re-enable buttons if they were disabled
     factButton.disabled = false;
     capButton.disabled = false;
-    skipButton.style.display = 'block'; // Show skip button for new question
-    // Remove the next button if it exists
+    skipButton.style.display = 'block';
     if (nextButton) {
       nextButton.remove();
-      nextButton = null; // Clear the variable
+      nextButton = null;
     }
   } else {
-    // Game over or no more questions
-    questionText.textContent = "Game Over! Your final score is " + score;
-    factButton.style.display = 'none'; // Hide buttons
-    capButton.style.display = 'none'; // Hide buttons
-    skipButton.style.display = 'none'; // Hide skip button
-    if (nextButton) {
-      nextButton.remove(); // Ensure next button is gone at the end
-    }
+    endGame("Game Over!");
   }
 }
 
@@ -338,12 +332,11 @@ function checkAnswer(userAnswer) {
   // Disable buttons after answering
   factButton.disabled = true;
   capButton.disabled = true;
-  skipButton.style.display = 'none'; // Hide skip button after answering
+  skipButton.style.display = 'none';
 
   const currentQuestion = triviaData[currentQuestionIndex];
   const correctAnswer = currentQuestion.answer;
 
-  // Display feedback and play sound
   if (userAnswer === correctAnswer) {
     score++;
     scoreDisplay.textContent = score;
@@ -351,22 +344,30 @@ function checkAnswer(userAnswer) {
     feedbackElement.classList.add('correct');
     playSound(correctSound);
   } else {
+    wrongAnswers++;
+    updateWrongDisplay();
     feedbackElement.textContent = "Incorrect! It's a " + (correctAnswer ? "Fact" : "Cap") + ". " + (currentQuestion.explanation || '');
     feedbackElement.classList.add('incorrect');
     playSound(incorrectSound);
+    
+    if (wrongAnswers >= MAX_WRONG_ANSWERS) {
+      endGame("Game Over! You've made too many wrong answers.");
+      return;
+    }
   }
 
-  // Create and display the "Next Question" button
-  nextButton = document.createElement('button');
-  nextButton.textContent = "Next Question";
-  nextButton.classList.add('next-button');
-  document.querySelector('.buttons').appendChild(nextButton);
+  // Only create next button if game is not over
+  if (wrongAnswers < MAX_WRONG_ANSWERS) {
+    nextButton = document.createElement('button');
+    nextButton.textContent = "Next Question";
+    nextButton.classList.add('next-button');
+    document.querySelector('.buttons').appendChild(nextButton);
 
-  // Add event listener for the next button
-  nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    displayQuestion();
-  });
+    nextButton.addEventListener('click', () => {
+      currentQuestionIndex++;
+      displayQuestion();
+    });
+  }
 }
 
 // Event listeners for the Fact and Cap buttons remain the same
@@ -404,18 +405,161 @@ function skipQuestion() {
 // Add skip button event listener
 skipButton.addEventListener('click', skipQuestion);
 
-// Update the start screen functionality to reset skips
+// Leaderboard functionality
+let currentUsername = '';
+const usernameInput = document.getElementById('username');
+const usernameError = document.querySelector('.username-error');
+const leaderboard = document.getElementById('leaderboard');
+const leaderboardList = document.querySelector('.leaderboard-list');
+
+// Load leaderboard from localStorage
+function loadLeaderboard() {
+  const leaderboardData = JSON.parse(localStorage.getItem('leaderboard')) || [];
+  return leaderboardData;
+}
+
+// Save leaderboard to localStorage
+function saveLeaderboard(leaderboardData) {
+  localStorage.setItem('leaderboard', JSON.stringify(leaderboardData));
+}
+
+// Update leaderboard display
+function updateLeaderboardDisplay() {
+  const leaderboardData = loadLeaderboard();
+  leaderboardList.innerHTML = '';
+  
+  // Sort by score (highest first)
+  leaderboardData.sort((a, b) => b.score - a.score);
+  
+  // Display top 10 scores
+  leaderboardData.slice(0, 10).forEach((entry, index) => {
+    const item = document.createElement('div');
+    item.className = 'leaderboard-item';
+    item.innerHTML = `
+      <span class="rank">#${index + 1}</span>
+      <span class="username">${entry.username}</span>
+      <span class="score">${entry.score}</span>
+    `;
+    leaderboardList.appendChild(item);
+  });
+}
+
+// Add score to leaderboard
+function addScoreToLeaderboard(username, score) {
+  const leaderboardData = loadLeaderboard();
+  leaderboardData.push({ username, score });
+  saveLeaderboard(leaderboardData);
+  updateLeaderboardDisplay();
+}
+
+// Function to update wrong answers display
+function updateWrongDisplay() {
+  wrongDisplay.textContent = wrongAnswers;
+  if (wrongAnswers >= 7) {
+    wrongDisplay.parentElement.classList.add('warning');
+  } else {
+    wrongDisplay.parentElement.classList.remove('warning');
+  }
+}
+
+// Update the start screen functionality
 document.addEventListener('DOMContentLoaded', () => {
   const startScreen = document.getElementById('start-screen');
   const gameContainer = document.getElementById('game-container');
   const startButton = document.getElementById('start-button');
+  const viewLeaderboardButton = document.getElementById('view-leaderboard-button');
+  const backButton = document.getElementById('back-button');
+  const backToHomeButton = document.getElementById('back-to-home');
 
   startButton.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    
+    if (!username) {
+      usernameError.textContent = 'Please enter a username';
+      return;
+    }
+    
+    currentUsername = username;
+    usernameError.textContent = '';
     startScreen.style.display = 'none';
     gameContainer.style.display = 'block';
     skipsRemaining = 3;
+    wrongAnswers = 0;
     updateSkipsDisplay();
+    updateWrongDisplay();
     loadTriviaData();
+  });
+
+  // Add back to home/try again button functionality
+  backToHomeButton.addEventListener('click', () => {
+    // Reset game state
+    score = 0;
+    currentQuestionIndex = 0;
+    wrongAnswers = 0;
+    skipsRemaining = 3;
+    scoreDisplay.textContent = '0';
+    updateSkipsDisplay();
+    updateWrongDisplay();
+    
+    // Reset button text
+    backToHomeButton.textContent = "Back to Home";
+    
+    if (backToHomeButton.textContent === "Try Again") {
+      // If it's a try again, stay in the game
+      gameContainer.style.display = 'block';
+      backToHomeButton.style.display = 'none';
+      loadTriviaData();
+    } else {
+      // If it's back to home, go to start screen
+      gameContainer.style.display = 'none';
+      startScreen.style.display = 'block';
+      usernameInput.value = '';
+      usernameError.textContent = '';
+    }
+    
+    factButton.style.display = 'block';
+    capButton.style.display = 'block';
+    skipButton.style.display = 'block';
+    feedbackElement.textContent = '';
+    feedbackElement.className = 'feedback';
+    if (nextButton) {
+      nextButton.remove();
+      nextButton = null;
+    }
+  });
+
+  // Update leaderboard display when viewing from start screen
+  viewLeaderboardButton.addEventListener('click', () => {
+    updateLeaderboardDisplay();
+    startScreen.style.display = 'none';
+    leaderboard.style.display = 'block';
+  });
+
+  // Add back button functionality
+  backButton.addEventListener('click', () => {
+    leaderboard.style.display = 'none';
+    startScreen.style.display = 'block';
+    // Reset game state
+    score = 0;
+    currentQuestionIndex = 0;
+    wrongAnswers = 0;
+    skipsRemaining = 3;
+    scoreDisplay.textContent = '0';
+    updateSkipsDisplay();
+    updateWrongDisplay();
+    usernameInput.value = '';
+    usernameError.textContent = '';
+    gameContainer.style.display = 'none';
+    factButton.style.display = 'block';
+    capButton.style.display = 'block';
+    skipButton.style.display = 'block';
+    backToHomeButton.style.display = 'none';
+    feedbackElement.textContent = '';
+    feedbackElement.className = 'feedback';
+    if (nextButton) {
+      nextButton.remove();
+      nextButton = null;
+    }
   });
 });
 
@@ -464,4 +608,29 @@ function createParticles() {
 
 // Call the function when the page loads
 window.addEventListener('load', createParticles);
+
+// Update the endGame function
+function endGame(message) {
+  // Hide game buttons
+  factButton.style.display = 'none';
+  capButton.style.display = 'none';
+  skipButton.style.display = 'none';
+  if (nextButton) {
+    nextButton.remove();
+  }
+  
+  // Update question text with game over message
+  questionText.textContent = message + " Your final score is " + score;
+  
+  // Add score to leaderboard
+  addScoreToLeaderboard(currentUsername, score);
+  
+  // Show try again button
+  backToHomeButton.textContent = "Try Again";
+  backToHomeButton.style.display = 'block';
+  
+  // Disable fact and cap buttons
+  factButton.disabled = true;
+  capButton.disabled = true;
+}
   

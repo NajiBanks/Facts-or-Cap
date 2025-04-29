@@ -22,7 +22,12 @@
           <li>You have 3 skips per game - use them wisely!</li>
         </ul>
       </div>
+      <div class="username-input">
+        <input type="text" id="username" placeholder="Enter your username" maxlength="15">
+        <p class="username-error"></p>
+      </div>
       <button id="start-button" class="start-button">Start Game</button>
+      <button id="view-leaderboard-button" class="view-leaderboard-button">View Leaderboard</button>
     </div>
 
     <!-- Game Container (initially hidden) -->
@@ -31,6 +36,7 @@
       <div class="game-stats">
         <div class="score-display">Score: <span id="score">0</span></div>
         <div class="skip-display">Skips: <span id="skips">3</span></div>
+        <div class="wrong-display">Wrong: <span id="wrong">0</span>/10</div>
       </div>
       <div class="card">
         <p id="question-text">Loading question...</p>
@@ -43,6 +49,16 @@
         <button id="fact-button">Fact</button>
         <button id="cap-button">Cap</button>
         <button id="skip-button" class="skip-button">Skip Question</button>
+      </div>
+      <button id="back-to-home" class="back-to-home" style="display: none;">Back to Home</button>
+    </div>
+
+    <!-- Leaderboard (initially hidden) -->
+    <div id="leaderboard" class="leaderboard" style="display: none;">
+      <h2>Leaderboard</h2>
+      <div class="leaderboard-list"></div>
+      <div class="leaderboard-buttons">
+        <button id="back-button" class="back-button">Back to Start</button>
       </div>
     </div>
 
