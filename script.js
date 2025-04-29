@@ -7,6 +7,9 @@ const feedbackElement = document.getElementById('feedback'); // Get the feedback
 let score = 0;
 let currentQuestionIndex = 0;
 let triviaData = [];
+let skipsRemaining = 3;
+const skipButton = document.getElementById('skip-button');
+const skipsDisplay = document.getElementById('skips');
 
 const exampleTrivia = [
   {
@@ -284,6 +287,18 @@ const exampleTrivia = [
 // Add a "Next Question" button (will be created in JavaScript)
 let nextButton;
 
+// Add sound effects
+const correctSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3');
+const incorrectSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2007/2007-preview.mp3');
+
+// Function to play sound with volume control
+function playSound(sound) {
+  sound.volume = 0.5; // Set volume to 50%
+  sound.play().catch(error => {
+    console.log('Error playing sound:', error);
+  });
+}
+
 function loadTriviaData() {
   triviaData = exampleTrivia;
   shuffleArray(triviaData);
@@ -301,6 +316,7 @@ function displayQuestion() {
     // Re-enable buttons if they were disabled
     factButton.disabled = false;
     capButton.disabled = false;
+    skipButton.style.display = 'block'; // Show skip button for new question
     // Remove the next button if it exists
     if (nextButton) {
       nextButton.remove();
@@ -311,7 +327,8 @@ function displayQuestion() {
     questionText.textContent = "Game Over! Your final score is " + score;
     factButton.style.display = 'none'; // Hide buttons
     capButton.style.display = 'none'; // Hide buttons
-     if (nextButton) {
+    skipButton.style.display = 'none'; // Hide skip button
+    if (nextButton) {
       nextButton.remove(); // Ensure next button is gone at the end
     }
   }
@@ -321,19 +338,22 @@ function checkAnswer(userAnswer) {
   // Disable buttons after answering
   factButton.disabled = true;
   capButton.disabled = true;
+  skipButton.style.display = 'none'; // Hide skip button after answering
 
   const currentQuestion = triviaData[currentQuestionIndex];
   const correctAnswer = currentQuestion.answer;
 
-  // Display feedback
+  // Display feedback and play sound
   if (userAnswer === correctAnswer) {
     score++;
     scoreDisplay.textContent = score;
     feedbackElement.textContent = "Correct! It's a " + (correctAnswer ? "Fact" : "Cap") + ". " + (currentQuestion.explanation || '');
     feedbackElement.classList.add('correct');
+    playSound(correctSound);
   } else {
     feedbackElement.textContent = "Incorrect! It's a " + (correctAnswer ? "Fact" : "Cap") + ". " + (currentQuestion.explanation || '');
     feedbackElement.classList.add('incorrect');
+    playSound(incorrectSound);
   }
 
   // Create and display the "Next Question" button
@@ -365,7 +385,39 @@ function shuffleArray(array) {
   }
 }
 
-loadTriviaData();
+function updateSkipsDisplay() {
+  skipsDisplay.textContent = skipsRemaining;
+  skipButton.disabled = skipsRemaining === 0;
+}
+
+function skipQuestion() {
+  if (skipsRemaining > 0) {
+    skipsRemaining--;
+    updateSkipsDisplay();
+    currentQuestionIndex++;
+    displayQuestion();
+    feedbackElement.textContent = "Question skipped!";
+    feedbackElement.className = 'feedback';
+  }
+}
+
+// Add skip button event listener
+skipButton.addEventListener('click', skipQuestion);
+
+// Update the start screen functionality to reset skips
+document.addEventListener('DOMContentLoaded', () => {
+  const startScreen = document.getElementById('start-screen');
+  const gameContainer = document.getElementById('game-container');
+  const startButton = document.getElementById('start-button');
+
+  startButton.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    gameContainer.style.display = 'block';
+    skipsRemaining = 3;
+    updateSkipsDisplay();
+    loadTriviaData();
+  });
+});
 
 // Add mouse-following effect
 document.addEventListener('DOMContentLoaded', () => {
@@ -393,4 +445,23 @@ document.addEventListener('DOMContentLoaded', () => {
     card.style.transition = 'transform 0.1s ease';
   });
 });
+
+// Remove the particle effect code
+// Create particles
+function createParticles() {
+  const particlesContainer = document.createElement('div');
+  particlesContainer.className = 'particles';
+  document.body.appendChild(particlesContainer);
+
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// Call the function when the page loads
+window.addEventListener('load', createParticles);
   

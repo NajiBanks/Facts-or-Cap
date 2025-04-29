@@ -7,9 +7,31 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="game-container">
+    <!-- Start Screen -->
+    <div id="start-screen" class="start-screen">
       <h1>Facts or Cap</h1>
-      <div class="score-display">Score: <span id="score">0</span></div>
+      <div class="instructions">
+        <h2>How to Play</h2>
+        <p>Test your knowledge of Gen Z culture and trends!</p>
+        <ul>
+          <li>Read each statement carefully</li>
+          <li>Click "Fact" if you think it's true</li>
+          <li>Click "Cap" if you think it's false</li>
+          <li>Get points for correct answers</li>
+          <li>Learn something new with each question!</li>
+          <li>You have 3 skips per game - use them wisely!</li>
+        </ul>
+      </div>
+      <button id="start-button" class="start-button">Start Game</button>
+    </div>
+
+    <!-- Game Container (initially hidden) -->
+    <div id="game-container" class="game-container" style="display: none;">
+      <h1>Facts or Cap</h1>
+      <div class="game-stats">
+        <div class="score-display">Score: <span id="score">0</span></div>
+        <div class="skip-display">Skips: <span id="skips">3</span></div>
+      </div>
       <div class="card">
         <p id="question-text">Loading question...</p>
       </div>
@@ -20,10 +42,11 @@
       <div class="buttons">
         <button id="fact-button">Fact</button>
         <button id="cap-button">Cap</button>
+        <button id="skip-button" class="skip-button">Skip Question</button>
       </div>
     </div>
 
     <script src="script.js"></script>
   </body>
 </html>
-  
+   
